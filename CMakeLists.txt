@@ -6,7 +6,7 @@ add_definitions("-std=c++11")
 
 file(GLOB SOURCES src/*.cpp)
 
-add_executable(hello ${SOURCES})
+add_executable(index ${SOURCES})
 
 
 
@@ -26,4 +26,4 @@ endif()
 
 
 include_directories(include ${OPENGL_INCLUDE_DIRS} glfw ${GLEW_INCLUDE_DIRS})
-target_link_libraries(hello ${OPENGL_LIBRARIES} glfw ${GLEW_LIBRARIES})
+target_link_libraries(index ${OPENGL_LIBRARIES} glfw ${GLEW_LIBRARIES})
