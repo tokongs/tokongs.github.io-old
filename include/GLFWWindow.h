@@ -1,10 +1,12 @@
 #pragma once
 #include <cstdio>
 #include <memory>
-#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "AbstractWindow.h"
 #include "Logging.h"
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
 struct DestroyGLFWwindow {
     void operator()(GLFWwindow* window){
@@ -22,8 +24,8 @@ public:
     void close() const override;
     void update() const override;
 
-    GLFWwindow* getRawWindowPtr() const;
-
 private:
+    void initGui();
     std::unique_ptr<GLFWwindow, DestroyGLFWwindow> window;
+
 };

@@ -1,12 +1,12 @@
 #include "GLFWWindow.h"
+
 GLFWWindow::GLFWWindow(std::string title, int width, int height, bool resizable)
-: AbstractWindow(std::move(title), width, height, resizable)
-{
-    glfwSetErrorCallback([](int error, const char* description){
+        : AbstractWindow(std::move(title), width, height, resizable) {
+    glfwSetErrorCallback([](int error, const char *description) {
         INDEX_WARN("GLFWError({}): {}", error, description);
     });
 
-    if(!glfwInit()){
+    if (!glfwInit()) {
         INDEX_ERROR("Failed to initialize GLFW.");
         glfwTerminate();
         return;
@@ -25,16 +25,18 @@ GLFWWindow::GLFWWindow(std::string title, int width, int height, bool resizable)
 #endif
 
     window = std::unique_ptr<GLFWwindow, DestroyGLFWwindow>(glfwCreateWindow(width, height, title.c_str(), NULL, NULL));
-    if(!window){
+    if (!window) {
         INDEX_ERROR("Failed to create GLFW WINDOW");
     }
     INDEX_INFO("Window was successfully created.");
 
     glfwMakeContextCurrent(window.get());
     glfwSwapInterval(1);
+
+    initGui();
 }
 
-GLFWWindow::~GLFWWindow(){
+GLFWWindow::~GLFWWindow() {
     glfwTerminate();
     INDEX_INFO("GLFW was terminated");
 }
@@ -57,6 +59,21 @@ std::tuple<int, int> GLFWWindow::getFrameBufferSize() const {
     return {width, height};
 }
 
-GLFWwindow* GLFWWindow::getRawWindowPtr() const {
-    return window.get();
+void GLFWWindow::initGui() {
+    //GUI
+    ImGui::CreateContext();
+    ImGuiIO &io = ImGui::GetIO();
+    (void) io;
+
+#ifdef __EMSCRIPTEN__
+    io.IniFilename = NULL;
+    const char* glslVersion = "#version 300 es";
+#else
+    const char *glslVersion = "#version 460";
+#endif
+
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplGlfw_InitForOpenGL(window.get(), true);
+    ImGui_ImplOpenGL3_Init(glslVersion);
 }

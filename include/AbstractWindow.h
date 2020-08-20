@@ -13,7 +13,6 @@ public:
     virtual std::tuple<int, int> getFrameBufferSize() const = 0;
     virtual void update() const = 0;
 
-
 protected:
     int width;
     int height;
