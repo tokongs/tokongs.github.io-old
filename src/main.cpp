@@ -15,7 +15,7 @@
 // GLFW
 #include <GLFW/glfw3.h>
 #include <cstring>
-
+#include <GLFWWindow.h>
 
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -43,16 +43,9 @@ void main_loop() { loop(); }
 // The MAIN function, from here we start the application and run the game loop
 int main()
 {
-    // Init GLFW
-    glfwInit();
 
 
-    // Create a GLFWwindow object that we can use for GLFW's functions
-    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "LearnOpenGL", nullptr, nullptr);
-    glfwMakeContextCurrent(window);
-
-    // Set the required callback functions
-    glfwSetKeyCallback(window, key_callback);
+    GLFWWindow window("Index");
 
 #ifndef __EMSCRIPTEN__
     // Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
@@ -62,8 +55,7 @@ int main()
 #endif
 
     // Define the viewport dimensions
-    int width, height;
-    glfwGetFramebufferSize(window, &width, &height);
+    auto [width, height] = window.getFrameBufferSize();
     glViewport(0, 0, width, height);
 
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -118,24 +110,14 @@ loop = [&] {// Check if any events have been activiated (key pressed, mouse move
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glBindVertexArray(0);
 
-        glfwSwapBuffers(window);
+        window.update();
  };
 #ifdef __EMSCRIPTEN__
  emscripten_set_main_loop(main_loop, 0, true);
 #else
-    while (!glfwWindowShouldClose(window)){ main_loop(); }
+    while (!window.shouldClose()){ main_loop(); }
 #endif
     glDeleteVertexArrays(1, &vao);
     glDeleteBuffers(1, &vbo);
-    // Terminate GLFW, clearing any resources allocated by GLFW.
-    glfwTerminate();
     return 0;
 }
-
-// Is called whenever a key is pressed/released via GLFW
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-{
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
-}
-

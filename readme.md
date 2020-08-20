@@ -1,6 +1,16 @@
 # WASM OpenGL project
 
+# Dependencies
 
+* OpenGL
+* GLFW
+* GLEW(for linux)
+* Emscripten(for WASM)
+* spdlog
+
+The ***3rd-party*** folder contains a verision of spdlog compiled with emscripten. If
+you want the newest version you'll have to to this yourself. It's mostly the same commmands
+as this project uses. 
 
 ## Build
 To build the project you need to have CMake and optionally Emscripten if you
