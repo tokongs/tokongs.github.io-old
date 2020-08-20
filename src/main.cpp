@@ -17,6 +17,10 @@
 #include <cstring>
 #include <GLFWWindow.h>
 
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
@@ -98,9 +102,34 @@ int main()
     glBindVertexArray(0);
     // Game loop
 
+    //GUI
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+#ifdef __EMSCRIPTEN__
+    io.IniFilename = NULL;
+    const char* glslVersion = "#version 300 es";
+#else
+    const char* glslVersion = "#version 460";
+#endif
+
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplGlfw_InitForOpenGL(window.getRawWindowPtr(), true);
+    ImGui_ImplOpenGL3_Init(glslVersion);
+
+    bool open = true;
 loop = [&] {// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
         glfwPollEvents();
 
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        ImGui::ShowDemoWindow(&open);
+
+
+        ImGui::Render();
         glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -109,7 +138,7 @@ loop = [&] {// Check if any events have been activiated (key pressed, mouse move
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glBindVertexArray(0);
-
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         window.update();
  };
 #ifdef __EMSCRIPTEN__

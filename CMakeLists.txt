@@ -4,7 +4,7 @@ project(Undefined)
 add_definitions("-std=c++20")
 
 
-file(GLOB SOURCES src/*.cpp)
+file(GLOB SOURCES src/*.cpp 3rd-party/imgui/*.cpp)
 
 add_executable(index ${SOURCES} include/AbstractWindow.h src/AbstractWindow.cpp
         include/GLFWWindow.h src/GLFWWindow.cpp)
@@ -17,7 +17,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${USE_FLAGS}")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${USE_FLAGS}")
     set(CMAKE_EXECUTABLE_SUFFIX .html)
-    include_directories(include ${OPENGL_INCLUDE_DIRS} glfw ${GLEW_INCLUDE_DIRS} 3rd-party/spdlog/include)
+    include_directories(include ${OPENGL_INCLUDE_DIRS} glfw ${GLEW_INCLUDE_DIRS} 3rd-party/spdlog/include 3rd-party/imgui)
     target_link_libraries(index ${OPENGL_LIBRARIES} glfw ${GLEW_LIBRARIES})
     link_directories(3rd-party/spdlog/libspdlogd.a)
 else()
@@ -25,7 +25,7 @@ else()
     find_package(OpenGL REQUIRED)
     find_package(glfw3 3.3 REQUIRED)
     find_package(spdlog REQUIRED)
-    include_directories(include ${OPENGL_INCLUDE_DIRS} glfw ${GLEW_INCLUDE_DIRS} ${SPDLOG_INCLUDE_DIRS})
+    include_directories(include ${OPENGL_INCLUDE_DIRS} glfw ${GLEW_INCLUDE_DIRS} ${SPDLOG_INCLUDE_DIRS} 3rd-party/imgui)
     target_link_libraries(index ${OPENGL_LIBRARIES} glfw ${GLEW_LIBRARIES} spdlog::spdlog)
 endif()
 

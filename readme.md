@@ -7,10 +7,14 @@
 * GLEW(for linux)
 * Emscripten(for WASM)
 * spdlog
+* imgui
 
 The ***3rd-party*** folder contains a verision of spdlog compiled with emscripten. If
 you want the newest version you'll have to to this yourself. It's mostly the same commmands
 as this project uses. 
+
+Just include files from imgui to use. Might find other or newer implementation files in their repo.
+
 
 ## Build
 To build the project you need to have CMake and optionally Emscripten if you

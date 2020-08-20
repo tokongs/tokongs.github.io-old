@@ -8,6 +8,7 @@ GLFWWindow::GLFWWindow(std::string title, int width, int height, bool resizable)
 
     if(!glfwInit()){
         INDEX_ERROR("Failed to initialize GLFW.");
+        glfwTerminate();
         return;
     }
 
@@ -30,11 +31,12 @@ GLFWWindow::GLFWWindow(std::string title, int width, int height, bool resizable)
     INDEX_INFO("Window was successfully created.");
 
     glfwMakeContextCurrent(window.get());
+    glfwSwapInterval(1);
 }
 
 GLFWWindow::~GLFWWindow(){
-    glfwDestroyWindow(window.get());
-    INDEX_INFO("Window was destroyed");
+    glfwTerminate();
+    INDEX_INFO("GLFW was terminated");
 }
 
 void GLFWWindow::close() const {
@@ -53,4 +55,8 @@ std::tuple<int, int> GLFWWindow::getFrameBufferSize() const {
     int width, height;
     glfwGetFramebufferSize(window.get(), &width, &height);
     return {width, height};
+}
+
+GLFWwindow* GLFWWindow::getRawWindowPtr() const {
+    return window.get();
 }

@@ -22,6 +22,8 @@ public:
     void close() const override;
     void update() const override;
 
+    GLFWwindow* getRawWindowPtr() const;
+
 private:
     std::unique_ptr<GLFWwindow, DestroyGLFWwindow> window;
 };
