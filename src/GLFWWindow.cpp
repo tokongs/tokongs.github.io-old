@@ -37,7 +37,7 @@ GLFWWindow::GLFWWindow(std::string title, int width, int height, bool resizable)
 }
 
 GLFWWindow::~GLFWWindow() {
-    glfwTerminate();
+    glfwTerminate(); //TODO: Might have to do something here.
     INDEX_INFO("GLFW was terminated");
 }
 

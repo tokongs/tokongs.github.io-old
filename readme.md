@@ -8,13 +8,11 @@
 * Emscripten(for WASM)
 * spdlog
 * imgui
+* glm
 
-The ***3rd-party*** folder contains a verision of spdlog compiled with emscripten. If
-you want the newest version you'll have to to this yourself. It's mostly the same commmands
-as this project uses. 
-
-Just include files from imgui to use. Might find other or newer implementation files in their repo.
-
+The ***3rd-party*** folder contains a few dependencies which are not ported to Emscripten.
+I have built the ones needed to be built and put them in their respective folder. 
+These are not meant to be used when compiling to anything other than WASM. 
 
 ## Build
 To build the project you need to have CMake and optionally Emscripten if you
